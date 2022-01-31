@@ -11,7 +11,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
-#    restart: always
+    restart: always
     depends_on:
       - db # This service depends on mysql. Start that first.
     environment: # Pass environment variables to the service
@@ -31,7 +31,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80" # Map the exposed port 80 on the container to port 8081 on the host machine
-#    restart: always
+    restart: always
     depends_on:
       - app-service
     networks:
@@ -42,11 +42,9 @@ services:
     image: mysql:8.0
     ports:
       - "3308:3306"
-#    restart: always
+    restart: always
     environment:
       MYSQL_DATABASE: cakemanager
-#      MYSQL_USER: admin
-#      MYSQL_PASSWORD: admin
       MYSQL_ROOT_PASSWORD: root
     networks:
       - backend
