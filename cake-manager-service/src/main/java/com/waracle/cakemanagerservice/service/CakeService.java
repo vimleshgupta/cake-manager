@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,11 +33,11 @@ public class CakeService {
         if (!isSampleDataExist()) {
             CakeResponse[] body = getCakeData();
             if (body != null && body.length != 0) {
-                List<Cake> cakes = Arrays.stream(body).map(cakeResponse -> Cake.builder()
+                Set<Cake> cakes = Arrays.stream(body).map(cakeResponse -> Cake.builder()
                         .title(cakeResponse.getTitle())
                         .description(cakeResponse.getDesc())
                         .imageUrl(cakeResponse.getImage()).build())
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toSet());
                 cakeRepository.saveAll(cakes);
             }
         }

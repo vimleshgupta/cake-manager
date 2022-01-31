@@ -11,6 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter(value = AccessLevel.PACKAGE)
 @Getter
+@EqualsAndHashCode
 public class Cake implements Serializable {
 
     @Id

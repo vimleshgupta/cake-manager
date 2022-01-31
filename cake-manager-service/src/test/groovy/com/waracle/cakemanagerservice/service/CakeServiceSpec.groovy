@@ -17,7 +17,6 @@ class CakeServiceSpec extends Specification {
     def "initialiseData should add sample data into the database"() {
 
         given:
-        List<Cake> cakes;
         def response = new CakeResponse(title: "First", desc: "first cake", image: "url")
         def expected = new ResponseEntity<CakeResponse[]>(new CakeResponse[] {response}, HttpStatus.ACCEPTED)
 
@@ -28,11 +27,36 @@ class CakeServiceSpec extends Specification {
 
         then:
         1 * cakeAPIClient.getCakes() >> expected
-        1 * cakeRepository.saveAll(_)  >> {arguments -> cakes=arguments[0]}
-        cakes.size() == 1
-        cakes.get(0).title == response.title
-        cakes.get(0).description == response.desc
-        cakes.get(0).imageUrl == response.image
+        1 * cakeRepository.saveAll(_ as Set)  >> {
+            arguments -> {
+                assert arguments.get(0).size() == 1
+                assert arguments[0].getAt(0).title == response.title
+                assert arguments[0].getAt(0).description == response.desc
+                assert arguments[0].getAt(0).imageUrl == response.image
+            }
+        }
+    }
+
+    def "initialiseData should add unique sample data only into the database"() {
+
+        given:
+        def response1 = new CakeResponse(title: "First", desc: "first cake", image: "url")
+        def response2 = new CakeResponse(title: "First", desc: "first cake", image: "url")
+        def response3 = new CakeResponse(title: "Second", desc: "first cake", image: "url")
+        def responseEntity = new ResponseEntity<CakeResponse[]>(new CakeResponse[] {response1, response2, response3}, HttpStatus.ACCEPTED)
+
+        when:
+        @Subject
+        CakeService cakeService = new CakeService(cakeRepository: cakeRepository, cakeAPIClient: cakeAPIClient)
+        cakeService.initialiseData()
+
+        then:
+        1 * cakeAPIClient.getCakes() >> responseEntity
+        1 * cakeRepository.saveAll(_)  >> {
+            arguments -> {
+                assert arguments.get(0).size() == 2
+            }
+        }
     }
 
     def "initialiseData should not sample data when client api throws an exception"() {
