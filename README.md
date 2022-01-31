@@ -1,4 +1,4 @@
-#Cake Manager application
+# Cake Manager application
 
 ## Get the code
 
@@ -7,7 +7,7 @@ Git:
     git clone https://github.com/vimleshgupta/cake-manager.git
     cd cake-manager
 
-###The project directory structure
+### The project directory structure
 
 This project has two modules:
  1. `cake-manager-service` - It represents back-end micro service which is built on Spring Boot.
@@ -52,27 +52,27 @@ docker-compose.yml                 Docker (Build and run in the docker container
 At the root level, you will find a `docker-compose.yml` file. A Docker Compose file to build Docker Images for Spring Boot, Angular and MySQL services and run all of them with a single command.
 Each module has separate `Dockerfile` which can be used to build and run single application.
 
-#Run the Application
+# Run the Application
     docker-compose up
     
-###Build All Containers
+### Build All Containers
     docker-compose build
 
-###Build Specific Container
+### Build Specific Container
 You can use service name as `app-service` or `app-client` or `db`
 
     docker-compose build <service_name>
 
-###Build Specific Container without Cache
+### Build Specific Container without Cache
     docker-compose build --no-cache service_name
 
-###Remove Containers
+### Remove Containers
 To remove the containers, networks, and volumes associated with the containerized environment, use the down command:
 
     docker-compose down 
 
 
-#Access the application
+# Access the application
 The client app runs on 80 port you can access the application with following urls:
 1. http://localhost/  - This will show home page with list of cakes.
 2. http://localhost/cakes - This will allow you to add a new cake and download all the cakes as json.
